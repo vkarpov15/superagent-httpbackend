@@ -1,0 +1,34 @@
+{
+  "name": "superagent-httpbackend",
+  "version": "0.0.1",
+  "author": "Valeri Karpov <val@boosterfuels.com>",
+  "description": "Stub out superagent requests using AngularJS' $httpBackend syntax",
+  "dependencies": {
+    "lodash": "4.6.1"
+  },
+  "devDependencies": {
+    "acquit": "0.4.1",
+    "acquit-ignore": "0.0.3",
+    "acquit-markdown": "0.0.5",
+    "istanbul": "0.4.2",
+    "mocha": "2.4.5",
+    "superagent": "1.7.x"
+  },
+  "engines": {
+    "node": ">= 4.0.0"
+  },
+  "license": "Apache 2.0",
+  "main": "index.js",
+  "peerDependencies": {
+    "superagent": "1.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vkarpov15/superagent-httpbackend.git"
+  },
+  "scripts": {
+    "coverage": "istanbul cover _mocha -- -R spec ./test/*",
+    "docs": "node docs.js",
+    "test": "mocha ./test/*.test.js"
+  }
+}

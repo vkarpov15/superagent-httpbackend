@@ -1,14 +1,13 @@
-# superagent-httpbackend
+'use strict';
 
-Stub out superagent requests using AngularJS' $httpBackend syntax
+const assert = require('assert');
+const httpBackend = require('../');
+const superagent = require('superagent');
 
+describe('Examples', () => {
+  afterEach(() => httpBackend.reset());
 
-# Examples
-
-## It configure responses to requests
-
-```javascript
-
+  it('configure responses to requests', () => {
     const httpBackend = require('../');
     const superagent = require('superagent');
 
@@ -20,38 +19,28 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     assert.strictEqual(response, null);
     httpBackend.flush();
     assert.deepEqual(response.body, { hello: 'world' });
-  
-```
+  });
 
-## It throws if an unexpected request gets fired
-
-```javascript
-
+  it('throws if an unexpected request gets fired', () => {
     assert.throws(function() {
       superagent.get('/hello', () => {});
     }, /Unexpected request/);
-  
-```
+  });
 
-## It reset after each test
-
-```javascript
-
+  it('reset after each test', () => {
     let response = null;
     httpBackend.expect('GET', '/hello').respond({ hello: 'world' });
     httpBackend.reset();
     assert.throws(function() {
       superagent.get('/hello', () => {});
     }, /Unexpected request/);
-  
-```
+  });
+});
 
-# API
+describe('API', function() {
+  afterEach(() => httpBackend.reset());
 
-## It expect(verb, url)
-
-```javascript
-
+  it('expect(verb, url)', () => {
     let response = null;
     httpBackend.expect('GET', '/hello').respond({ hello: 'world' });
     superagent.get('/hello', (err, res) => {
@@ -60,13 +49,9 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     assert.strictEqual(response, null);
     httpBackend.flush();
     assert.deepEqual(response.body, { hello: 'world' });
-  
-```
+  });
 
-## It expectGET(url)
-
-```javascript
-
+  it('expectGET(url)', () => {
     let response = null;
     httpBackend.expectGET('/hello').respond({ hello: 'world' });
     superagent.get('/hello', (err, res) => {
@@ -75,13 +60,9 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     assert.strictEqual(response, null);
     httpBackend.flush();
     assert.deepEqual(response.body, { hello: 'world' });
-  
-```
+  });
 
-## It expectPUT(url, validateBody)
-
-```javascript
-
+  it('expectPUT(url, validateBody)', () => {
     let response = null;
     const validateBody = (body) => {
       throw new Error('Body validation failed');
@@ -90,5 +71,5 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     assert.throws(() => {
       superagent.put('/hello').send({ hello: 'world' }).end(() => {});
     }, /Body validation failed/);
-  
-```
+  });
+});
