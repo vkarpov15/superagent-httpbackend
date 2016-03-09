@@ -106,3 +106,20 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     }, /Body validation failed/);
   
 ```
+
+## expectPOST(url, validateBody)
+
+```javascript
+
+    let response = null;
+    const validateBody = (body) => {
+      assert.deepEqual(body, { hello: 'world' });
+    };
+    httpBackend.expectPUT('/hello', validateBody).respond({ foo: 'bar' });
+    superagent.put('/hello').send({ hello: 'world' }).end((error, res) => {
+      assert.ifError(error);
+      assert.deepEqual(res.body, { foo: 'bar' });
+    });
+    httpBackend.flush();
+  
+```

@@ -12,7 +12,7 @@ Request.prototype.end = function(callback) {
   if (res) {
     const validateBody = _.get(res, 'options.validateBody');
     if (validateBody) {
-      validateBody.call(this, this.body);
+      validateBody.call(this, this._data);
     }
     res.called = true;
     res.callback = callback;
