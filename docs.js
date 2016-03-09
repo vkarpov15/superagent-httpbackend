@@ -4,7 +4,7 @@ const acquit = require('acquit');
 const fs = require('fs');
 
 require('acquit-ignore')();
-require('acquit-markdown')();
+require('acquit-markdown')(null, { it: true });
 
 acquit.output(function(str) {
   return str.replace(/acquit:ignore:end\s+/g, '');

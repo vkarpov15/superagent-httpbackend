@@ -5,7 +5,7 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
 
 # Examples
 
-## It configure responses to requests
+## configure responses to requests
 
 ```javascript
 
@@ -23,7 +23,7 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
   
 ```
 
-## It throws if an unexpected request gets fired
+## throws if an unexpected request gets fired
 
 ```javascript
 
@@ -33,7 +33,21 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
   
 ```
 
-## It reset after each test
+## response errors
+
+```javascript
+
+    httpBackend.expect('GET', '/hello').error(401, 'Not Authorized', { error: 'Fail!' });
+    superagent.get('/hello', (error) => {
+      assert.ok(error);
+      assert.equal(error.statusCode, 401);
+      assert.deepEqual(error.body, { error: 'Fail!' });
+    });
+    httpBackend.flush();
+  
+```
+
+## reset after each test
 
 ```javascript
 
@@ -48,7 +62,7 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
 
 # API
 
-## It expect(verb, url)
+## expect(verb, url)
 
 ```javascript
 
@@ -63,7 +77,7 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
   
 ```
 
-## It expectGET(url)
+## expectGET(url)
 
 ```javascript
 
@@ -78,7 +92,7 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
   
 ```
 
-## It expectPUT(url, validateBody)
+## expectPUT(url, validateBody)
 
 ```javascript
 
