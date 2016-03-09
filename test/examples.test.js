@@ -27,6 +27,16 @@ describe('Examples', () => {
     }, /Unexpected request/);
   });
 
+  it('response errors', () => {
+    httpBackend.expect('GET', '/hello').error(401, 'Not Authorized', { error: 'Fail!' });
+    superagent.get('/hello', (error) => {
+      assert.ok(error);
+      assert.equal(error.statusCode, 401);
+      assert.deepEqual(error.body, { error: 'Fail!' });
+    });
+    httpBackend.flush();
+  });
+
   it('reset after each test', () => {
     let response = null;
     httpBackend.expect('GET', '/hello').respond({ hello: 'world' });

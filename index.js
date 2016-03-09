@@ -50,7 +50,14 @@ function flush() {
   }
   _.each(expectations, config => {
     if (config.callback) {
-      config.callback(null, new Response(config));
+      if (config.errored) {
+        const error = new Error(config.message);
+        error.statusCode = config.statusCode;
+        error.body = config.body;
+        config.callback(error);
+      } else {
+        config.callback(null, new Response(config));
+      }
     }
   });
   reset();
@@ -64,8 +71,9 @@ class ResponseConfiguration {
   constructor(verb, url, options) {
     this.verb = verb;
     this.url = url;
-    this.options= options;
+    this.options = options;
     this.called = false;
+    this.errored = false;
     this.callback = null;
   }
 
@@ -73,12 +81,19 @@ class ResponseConfiguration {
     this.body = body;
     this.headers = headers;
   }
+
+  error(code, message, body) {
+    this.errored = true;
+    this.statusCode = code;
+    this.message = message;
+    this.body = body;
+  }
 }
 
 class Response {
   constructor(config) {
     this.body = config.body;
-    this.test = JSON.stringify(config.body);
+    this.text = JSON.stringify(config.body);
     this.headers = config.headers;
   }
 }
