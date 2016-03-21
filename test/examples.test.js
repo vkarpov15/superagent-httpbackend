@@ -95,4 +95,14 @@ describe('API', function() {
     });
     httpBackend.flush();
   });
+
+  it('autoFlush option', () => {
+    let response = null;
+    httpBackend.expectGET('/hello', { autoFlush: true }).
+      respond({ hello: 'world' });
+    superagent.get('/hello', (err, res) => {
+      response = res;
+    });
+    assert.deepEqual(response.body, { hello: 'world' });
+  })
 });

@@ -123,3 +123,17 @@ Stub out superagent requests using AngularJS' $httpBackend syntax
     httpBackend.flush();
   
 ```
+
+## autoFlush option
+
+```javascript
+
+    let response = null;
+    httpBackend.expectGET('/hello', { autoFlush: true }).
+      respond({ hello: 'world' });
+    superagent.get('/hello', (err, res) => {
+      response = res;
+    });
+    assert.deepEqual(response.body, { hello: 'world' });
+  
+```

@@ -16,6 +16,9 @@ Request.prototype.end = function(callback) {
     }
     res.called = true;
     res.callback = callback;
+    if (_.get(res, 'options.autoFlush')) {
+      fireResponse(res);
+    }
     return this;
   }
   throw new Error(`Unexpected request ${this.method} ${this.url}`);
@@ -27,20 +30,22 @@ function expect(verb, url, options) {
   return config;
 }
 
-function expectGET(url) {
-  return expect('GET', url);
+function expectGET(url, options) {
+  return expect('GET', url, options);
 }
 
-function expectPUT(url, validateBody) {
-  return expect('PUT', url, { validateBody: validateBody });
+function expectPUT(url, validateBody, options) {
+  return expect('PUT', url,
+    _.merge(options || {}, { validateBody: validateBody }));
 }
 
-function expectPOST(url, validateBody) {
-  return expect('POST', url, { validateBody: validateBody });
+function expectPOST(url, validateBody, options) {
+  return expect('POST', url,
+    _.merge(options || {}, { validateBody: validateBody }));
 }
 
-function expectDELETE(url) {
-  return expect('DELETE', url);
+function expectDELETE(url, options) {
+  return expect('DELETE', url, options);
 }
 
 function flush() {
@@ -48,19 +53,22 @@ function flush() {
   if (notFinished) {
     throw new Error(`Expected request: ${notFinished.verb} ${notFinished.url}`);
   }
-  _.each(expectations, config => {
-    if (config.callback) {
-      if (config.errored) {
-        const error = new Error(config.message);
-        error.statusCode = config.statusCode;
-        error.body = config.body;
-        config.callback(error);
-      } else {
-        config.callback(null, new Response(config));
-      }
-    }
-  });
+  _.each(expectations, fireResponse);
   reset();
+}
+
+function fireResponse(config) {
+  if (config.callback && !config.fired) {
+    config.fired = true;
+    if (config.errored) {
+      const error = new Error(config.message);
+      error.statusCode = config.statusCode;
+      error.body = config.body;
+      config.callback(error);
+    } else {
+      config.callback(null, new Response(config));
+    }
+  }
 }
 
 function reset() {
