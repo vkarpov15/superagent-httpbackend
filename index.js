@@ -36,12 +36,12 @@ function expectGET(url, options) {
 
 function expectPUT(url, validateBody, options) {
   return expect('PUT', url,
-    _.merge(options || {}, { validateBody: validateBody }));
+    _.merge({ validateBody: validateBody }, options || {}));
 }
 
 function expectPOST(url, validateBody, options) {
   return expect('POST', url,
-    _.merge(options || {}, { validateBody: validateBody }));
+    _.merge({ validateBody: validateBody }, options || {}));
 }
 
 function expectDELETE(url, options) {
