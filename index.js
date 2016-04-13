@@ -91,6 +91,10 @@ class ResponseConfiguration {
   }
 
   error(code, message, body) {
+    if (arguments.length === 2 && typeof message === 'object') {
+      body = message;
+      message = null;
+    }
     this.errored = true;
     this.statusCode = code;
     this.message = message;
