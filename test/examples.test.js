@@ -31,8 +31,9 @@ describe('Examples', () => {
     httpBackend.expect('GET', '/hello').error(401, 'Not Authorized', { error: 'Fail!' });
     superagent.get('/hello', (error) => {
       assert.ok(error);
-      assert.equal(error.statusCode, 401);
-      assert.deepEqual(error.body, { error: 'Fail!' });
+      assert.equal(error.code, 401);
+      assert.equal(error.response.statusCode, 401);
+      assert.deepEqual(error.response.body, { error: 'Fail!' });
     });
     httpBackend.flush();
   });
