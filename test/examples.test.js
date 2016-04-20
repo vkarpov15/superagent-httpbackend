@@ -105,5 +105,18 @@ describe('API', function() {
       response = res;
     });
     assert.deepEqual(response.body, { hello: 'world' });
-  })
+  });
+
+  it('with superagent-promise', done => {
+    const superagent =
+      require('superagent-promise')(require('superagent'), Promise);
+    let response = null;
+    httpBackend.expectGET('/hello', { autoFlush: true }).
+      error(401, 'Not Authorized', { error: 'Fail!' });;
+    superagent.get('/hello').then(null, err => {
+      assert.ok(err);
+      assert.deepEqual(err.response.body, { error: 'Fail!' });
+      done();
+    });
+  });
 });

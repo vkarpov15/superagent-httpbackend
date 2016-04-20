@@ -17,7 +17,8 @@
     "browserify": "13.0.0",
     "istanbul": "0.4.2",
     "mocha": "2.4.5",
-    "superagent": "1.7.x"
+    "superagent": "1.7.x",
+    "superagent-promise": "1.1.0"
   },
   "engines": {
     "node": ">= 4.0.0"

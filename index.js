@@ -67,7 +67,7 @@ function fireResponse(config) {
         statusCode: config.statusCode,
         body: config.body
       };
-      config.callback(error);
+      config.callback(error, error.response);
     } else {
       config.callback(null, new Response(config));
     }
