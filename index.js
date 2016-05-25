@@ -68,6 +68,8 @@ function fireResponse(config) {
         body: config.body
       };
       config.callback(error, error.response);
+    } else if (config.httpError) {
+      config.callback(new Error(config.message));
     } else {
       config.callback(null, new Response(config));
     }
@@ -94,14 +96,19 @@ class ResponseConfiguration {
   }
 
   error(code, message, body) {
-    if (arguments.length === 2 && typeof message === 'object') {
+    if (arguments.length === 2) {
       body = message;
       message = null;
     }
-    this.errored = true;
-    this.statusCode = code;
-    this.message = message;
-    this.body = body;
+    if (arguments.length === 1) {
+      this.httpError = true;
+      this.message = code;
+    } else {
+      this.errored = true;
+      this.statusCode = code;
+      this.message = message;
+      this.body = body;
+    }
   }
 }
 

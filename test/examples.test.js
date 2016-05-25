@@ -38,6 +38,15 @@ describe('Examples', () => {
     httpBackend.flush();
   });
 
+  it('network errors', () => {
+    httpBackend.expect('GET', '/hello').error('ENOTFOUND');
+    superagent.get('/hello', (error) => {
+      assert.ok(error);
+      assert.equal(error.message, 'ENOTFOUND');
+    });
+    httpBackend.flush();
+  });
+
   it('reset after each test', () => {
     let response = null;
     httpBackend.expect('GET', '/hello').respond({ hello: 'world' });
