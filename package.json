@@ -17,8 +17,7 @@
     "browserify": "13.0.0",
     "istanbul": "0.4.2",
     "mocha": "2.4.5",
-    "superagent": "1.7.x",
-    "superagent-promise": "1.1.0"
+    "superagent": "2.x"
   },
   "engines": {
     "node": ">= 4.0.0"
@@ -26,7 +25,7 @@
   "license": "Apache 2.0",
   "main": "index.js",
   "peerDependencies": {
-    "superagent": "1.x"
+    "superagent": "2.x"
   },
   "repository": {
     "type": "git",
